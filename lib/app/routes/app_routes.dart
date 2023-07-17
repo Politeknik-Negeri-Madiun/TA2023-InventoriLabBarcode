@@ -21,6 +21,9 @@ abstract class Routes {
   static const ADMIN_SCAN_PEMINJAM = _Paths.ADMIN_SCAN_PEMINJAM;
   static const DETAIL_BARANG = _Paths.DETAIL_BARANG;
   static const ADMIN_STATUS = _Paths.ADMIN_STATUS;
+  static const PENGEMBALIAN = _Paths.PENGEMBALIAN;
+  static const DETAIL_HISTORY = _Paths.DETAIL_HISTORY;
+  static const ADMIN_PENGEMBALIAN = _Paths.ADMIN_PENGEMBALIAN;
 }
 
 abstract class _Paths {
@@ -43,4 +46,7 @@ abstract class _Paths {
   static const ADMIN_SCAN_PEMINJAM = '/admin-scan-peminjam';
   static const DETAIL_BARANG = '/detail-barang';
   static const ADMIN_STATUS = '/admin-status';
+  static const PENGEMBALIAN = '/pengembalian';
+  static const DETAIL_HISTORY = '/detail-history';
+  static const ADMIN_PENGEMBALIAN = '/admin-pengembalian';
 }

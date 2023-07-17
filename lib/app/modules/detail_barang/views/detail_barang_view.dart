@@ -1,7 +1,6 @@
 import 'package:barcode_ta/app/data/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../controllers/detail_barang_controller.dart';
@@ -14,15 +13,22 @@ class DetailBarangView extends GetView<DetailBarangController> {
   final TextEditingController userC = TextEditingController();
   final TextEditingController nameC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
+  final TextEditingController jmlC = TextEditingController();
   final TextEditingController typC = TextEditingController();
+  final TextEditingController ketC = TextEditingController();
+  final TextEditingController mtkC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     codeC.text = product.code;
     userC.text = product.user;
     nameC.text = product.name;
-    qtyC.text = "${product.qty}";
+    qtyC.text = product.qty.toString();
+    jmlC.text = product.jml.toString();
+    print("QTY: ${qtyC.text}");
     typC.text = product.typ;
+    ketC.text = product.ket;
+    mtkC.text = product.mtk;
 
     return Scaffold(
       appBar: AppBar(
@@ -86,9 +92,7 @@ class DetailBarangView extends GetView<DetailBarangController> {
               labelText: "Product Name",
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           TextField(
             autocorrect: false,
             controller: qtyC,
@@ -101,9 +105,7 @@ class DetailBarangView extends GetView<DetailBarangController> {
               labelText: "Quantity",
             ),
           ),
-          const SizedBox(
-            height: 35,
-          ),
+          const SizedBox(height: 20),
           TextField(
             autocorrect: false,
             controller: typC,
@@ -115,6 +117,46 @@ class DetailBarangView extends GetView<DetailBarangController> {
               hintText: "type",
               labelText: "Type",
             ),
+          ),
+          const SizedBox(height: 20),
+          TextField(
+            autocorrect: false,
+            controller: mtkC,
+            keyboardType: TextInputType.text,
+            readOnly: true,
+            decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              hintText: "mata kuliah",
+              labelText: "Mata Kuliah",
+            ),
+          ),
+          const SizedBox(
+            height: 35,
+          ),
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: controller.streamRole(),
+            builder: (context, snap) {
+              if (snap.connectionState == ConnectionState.waiting) {
+                return SizedBox();
+              }
+              String role = snap.data!.data()!["role"];
+              if (role == "admin") {
+                return TextField(
+                  autocorrect: false,
+                  controller: ketC,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    hintText: "penerima",
+                    labelText: "Penerima",
+                  ),
+                );
+              } else {
+                return SizedBox();
+              }
+            },
           ),
           const SizedBox(
             height: 35,
@@ -134,7 +176,9 @@ class DetailBarangView extends GetView<DetailBarangController> {
                           userC.text.isNotEmpty &&
                           nameC.text.isNotEmpty &&
                           qtyC.text.isNotEmpty &&
-                          typC.text.isNotEmpty) {
+                          typC.text.isNotEmpty &&
+                          mtkC.text.isNotEmpty &&
+                          ketC.text.isNotEmpty) {
                         controller.isLoading(true);
                         Map<String, dynamic> hasil =
                             await controller.addProduct({
@@ -142,8 +186,11 @@ class DetailBarangView extends GetView<DetailBarangController> {
                           "code": codeC.text,
                           "user": userC.text,
                           "name": nameC.text,
-                          "qty": int.tryParse(qtyC.text) ?? 0,
+                          "qty": int.parse(qtyC.text),
                           "typ": typC.text,
+                          "mtk": mtkC.text,
+                          "uid": product.uid,
+                          "ket": ketC.text,
                         });
                         controller.isLoading(false);
 

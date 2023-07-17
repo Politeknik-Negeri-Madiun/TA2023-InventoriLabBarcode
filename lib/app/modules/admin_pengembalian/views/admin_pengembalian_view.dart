@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/admin_status_controller.dart';
+import '../controllers/admin_pengembalian_controller.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:barcode_ta/app/data/models/product_model.dart';
 import 'package:barcode_ta/app/routes/app_pages.dart';
 
-class AdminStatusView extends GetView<AdminStatusController> {
-  AdminStatusView({Key? key}) : super(key: key);
+class AdminPengembalianView extends GetView<AdminPengembalianController> {
+  const AdminPengembalianView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AdminStatusController());
+    final controller = Get.put(AdminPengembalianController());
     Size size = MediaQuery.of(context).size;
     final searchC = TextEditingController();
     List<ProductModel> allProductsMain = [];
@@ -65,7 +65,7 @@ class AdminStatusView extends GetView<AdminStatusController> {
                   height: 25,
                 ),
                 Text(
-                  "Peminjaman Barang",
+                  "Pengembalian Barang",
                   style: TextStyle(fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
@@ -112,7 +112,8 @@ class AdminStatusView extends GetView<AdminStatusController> {
             Padding(
               padding: const EdgeInsets.only(top: 270),
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: Get.put(AdminStatusController()).streamStatusBarang(),
+                  stream: Get.put(AdminPengembalianController())
+                      .streamStatusBarang(),
                   builder: (context, snapProducts) {
                     if (snapProducts.connectionState ==
                         ConnectionState.waiting) {
@@ -166,7 +167,7 @@ class AdminStatusView extends GetView<AdminStatusController> {
                               ),
                               child: InkWell(
                                 onTap: () {
-                                  Get.toNamed(Routes.DETAIL_BARANG,
+                                  Get.toNamed(Routes.DETAIL_HISTORY,
                                       arguments: product);
                                 },
                                 borderRadius: BorderRadius.circular(9),

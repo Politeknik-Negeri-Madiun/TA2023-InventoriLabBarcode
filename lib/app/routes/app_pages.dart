@@ -1,10 +1,15 @@
 import 'package:get/get.dart';
+
 import '../modules/add_product/bindings/add_product_binding.dart';
 import '../modules/add_product/views/add_product_view.dart';
+import '../modules/admin_pengembalian/bindings/admin_pengembalian_binding.dart';
+import '../modules/admin_pengembalian/views/admin_pengembalian_view.dart';
 import '../modules/admin_status/bindings/admin_status_binding.dart';
 import '../modules/admin_status/views/admin_status_view.dart';
 import '../modules/detail_barang/bindings/detail_barang_binding.dart';
 import '../modules/detail_barang/views/detail_barang_view.dart';
+import '../modules/detail_history/bindings/detail_history_binding.dart';
+import '../modules/detail_history/views/detail_history_view.dart';
 import '../modules/detail_product/bindings/detail_product_binding.dart';
 import '../modules/detail_product/views/detail_product_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -15,6 +20,8 @@ import '../modules/lupa_password/bindings/lupa_password_binding.dart';
 import '../modules/lupa_password/views/lupa_password_view.dart';
 import '../modules/peminjaman_barang/bindings/peminjaman_barang_binding.dart';
 import '../modules/peminjaman_barang/views/peminjaman_barang_view.dart';
+import '../modules/pengembalian/bindings/pengembalian_binding.dart';
+import '../modules/pengembalian/views/pengembalian_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -112,6 +119,21 @@ class AppPages {
       name: _Paths.ADMIN_STATUS,
       page: () => AdminStatusView(),
       binding: AdminStatusBinding(),
+    ),
+    GetPage(
+      name: _Paths.PENGEMBALIAN,
+      page: () => const PengembalianView(),
+      binding: PengembalianBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_HISTORY,
+      page: () => DetailHistoryView(),
+      binding: DetailHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_PENGEMBALIAN,
+      page: () => const AdminPengembalianView(),
+      binding: AdminPengembalianBinding(),
     ),
   ];
 }

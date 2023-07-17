@@ -1,8 +1,8 @@
+import 'package:get/get.dart';
 import 'package:barcode_ta/app/data/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
@@ -11,11 +11,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 
-class AdminStatusController extends GetxController {
+class AdminPengembalianController extends GetxController {
   RxList<ProductModel> allProducts = List<ProductModel>.empty().obs;
   RxList<ProductModel> filteredProducts = List<ProductModel>.empty().obs;
   RxList<ProductModel> allProductsMain = RxList<ProductModel>();
 
+  RxBool isLoading = false.obs;
   RxBool isSearching = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -28,7 +29,7 @@ class AdminStatusController extends GetxController {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> streamStatusBarang() async* {
-    yield* firestore.collection("history").snapshots();
+    yield* firestore.collection("return").snapshots();
   }
 
   void search(String keyword) {
@@ -60,7 +61,7 @@ class AdminStatusController extends GetxController {
   void downloadCatalog() async {
     final pdf = pw.Document();
 
-    var getData = await firestore.collection("history").get();
+    var getData = await firestore.collection("return").get();
 
     // reset all products -> untuk mengatasi duplikat
     allProducts([]);
@@ -169,7 +170,7 @@ class AdminStatusController extends GetxController {
           return [
             pw.Center(
               child: pw.Text(
-                "HISTORY PEMINJAMAN",
+                "HISTORY PENGEMBALIAN",
                 textAlign: pw.TextAlign.center,
                 style: const pw.TextStyle(
                   fontSize: 24,

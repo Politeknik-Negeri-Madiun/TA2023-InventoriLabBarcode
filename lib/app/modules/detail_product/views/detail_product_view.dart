@@ -111,6 +111,7 @@ class DetailProductView extends GetView<DetailProductController> {
                   autocorrect: false,
                   controller: qtyC,
                   keyboardType: TextInputType.number,
+                  readOnly: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -131,6 +132,49 @@ class DetailProductView extends GetView<DetailProductController> {
                     labelText: "Quantity",
                   ),
                 );
+              }
+            },
+          ),
+          StreamBuilder(
+            stream: controller.streamRole(),
+            builder: (context, snap) {
+              if (snap.connectionState == ConnectionState.waiting) {
+                return SizedBox();
+              }
+              String role = snap.data!.data()!["role"];
+              if (role == "admin") {
+                return Row(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            int currentQty = int.tryParse(qtyC.text) ?? 0;
+                            // if (currentQty > 0) {
+                            controller.decreaseQuantity();
+                            qtyC.text = (currentQty - 1).toString();
+                          },
+                          // },
+                          icon: Icon(Icons.remove),
+                        ),
+                        Obx(() => Text(
+                              controller.qtyC.value.toString(),
+                              style: TextStyle(fontSize: 18),
+                            )),
+                        IconButton(
+                          onPressed: () {
+                            int currentQty = int.tryParse(qtyC.text) ?? 0;
+                            controller.increaseQuantity();
+                            qtyC.text = (currentQty + 1).toString();
+                          },
+                          icon: Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              } else {
+                return SizedBox();
               }
             },
           ),

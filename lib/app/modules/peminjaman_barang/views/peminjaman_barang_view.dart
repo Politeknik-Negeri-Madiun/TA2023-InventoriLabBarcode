@@ -1,5 +1,7 @@
 import 'package:barcode_ta/app/controllers/auth_controller.dart';
+import 'package:barcode_ta/app/modules/admin_pengembalian/views/admin_pengembalian_view.dart';
 import 'package:barcode_ta/app/modules/admin_status/views/admin_status_view.dart';
+import 'package:barcode_ta/app/modules/pengembalian/views/pengembalian_view.dart';
 import 'package:barcode_ta/app/modules/profile/views/profile_view.dart';
 import 'package:barcode_ta/app/modules/status/views/status_view.dart';
 import 'package:barcode_ta/app/modules/stok_barang/views/stok_barang_view.dart';
@@ -174,7 +176,7 @@ class Peminjaman_BarangView extends GetView<PeminjamanBarangController> {
                               AdminStatusView(),
                             ),
                             child: Text(
-                              'Status Peminjaman Barang',
+                              'Peminjaman Barang',
                               style: whiteTextStyle.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -201,7 +203,74 @@ class Peminjaman_BarangView extends GetView<PeminjamanBarangController> {
                               StatusView(),
                             ),
                             child: Text(
-                              'Status Peminjaman Barang',
+                              'Peminjaman Barang',
+                              style: whiteTextStyle.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: primaryColor),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: greyColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: controller.streamRole(),
+                  builder: (context, snap) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return SizedBox();
+                    }
+                    String role = snap.data!.data()!["role"];
+                    if (role == "admin") {
+                      return Container(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width -
+                            2 * defaultMargin,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: GestureDetector(
+                            onTap: () => Get.to(
+                              AdminPengembalianView(),
+                            ),
+                            child: Text(
+                              'Pengembalian Barang',
+                              style: whiteTextStyle.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: primaryColor),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: greyColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width -
+                            2 * defaultMargin,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: GestureDetector(
+                            onTap: () => Get.to(
+                              PengembalianView(),
+                            ),
+                            child: Text(
+                              'Pengembalian Barang',
                               style: whiteTextStyle.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,

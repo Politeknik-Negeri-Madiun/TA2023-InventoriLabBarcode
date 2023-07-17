@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class DetailProductController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingDelete = false.obs;
+  RxInt qtyC = RxInt(0);
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -14,6 +15,20 @@ class DetailProductController extends GetxController {
 
     yield* firestore.collection("Users").doc(uid).snapshots();
   }
+
+  void increaseQuantity() {
+    qtyC.value++;
+  }
+
+  void decreaseQuantity() {
+    qtyC.value--;
+  }
+
+  // void decreaseQuantity() {
+  //   if (qtyC.value > 0) {
+  //     qtyC.value--;
+  //   }
+  // }
 
   Future<Map<String, dynamic>> editProduct(Map<String, dynamic> data) async {
     try {

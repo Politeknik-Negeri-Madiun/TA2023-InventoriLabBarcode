@@ -197,7 +197,7 @@ class Stok_BarangView extends GetView<StokBarangController> {
                                 },
                                 borderRadius: BorderRadius.circular(9),
                                 child: Container(
-                                  height: 150,
+                                  height: 110,
                                   padding: const EdgeInsets.all(20),
                                   child: Row(
                                     children: [
@@ -207,7 +207,7 @@ class Stok_BarangView extends GetView<StokBarangController> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              product.code,
+                                              ("Product Code : ${product.code}"),
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),

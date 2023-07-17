@@ -1,9 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ScanPeminjamController extends GetxController {
   RxBool isLoading = false.obs;
+  RxInt jmlC = 0.obs;
+  RxInt qtyC = 0.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -20,6 +23,16 @@ class ScanPeminjamController extends GetxController {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> streamHistoryBarang() async* {
     yield* firestore.collection("history").snapshots();
+  }
+
+  void increaseQuantity() {
+    jmlC.value++;
+  }
+
+  void decreaseQuantity() {
+    if (jmlC.value > 0) {
+      jmlC.value--;
+    }
   }
 
   Future<int> getProductQty(String code) async {
@@ -55,11 +68,15 @@ class ScanPeminjamController extends GetxController {
             .then((snapshot) {
           if (snapshot.docs.isNotEmpty) {
             DocumentSnapshot<Map<String, dynamic>> doc = snapshot.docs.first;
-            int newQty = (productQty - data["qty"])
+            int newQty = (productQty - jmlC.value)
                 .toInt(); // Mengurangi qty sesuai dengan jumlah yang diambil
-            doc.reference.update({
-              "qty": newQty,
-            });
+            if (newQty >= 0) {
+              doc.reference.update({
+                "qty": newQty,
+              });
+            } else {
+              throw Exception("Stok produk tidak mencukupi.");
+            }
           }
         });
 
@@ -69,8 +86,9 @@ class ScanPeminjamController extends GetxController {
           "uid": data["uid"],
           "user": data["user"],
           "name": data["name"],
-          "qty": data["qty"],
+          "qty": jmlC.value,
           "typ": data["typ"],
+          "mtk": data["mtk"],
           "date": DateTime.now().toIso8601String(),
         });
         await firestore.collection("history").doc(hasil.id).update({
@@ -89,7 +107,7 @@ class ScanPeminjamController extends GetxController {
     } catch (e) {
       return {
         "error": true,
-        "message": "Tidak dapat menambah produk.",
+        "message": "Tidak dapat menambah produk: ${e.toString()}",
       };
     }
   }

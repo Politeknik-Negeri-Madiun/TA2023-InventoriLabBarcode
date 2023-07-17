@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/status_controller.dart';
+import '../controllers/pengembalian_controller.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:barcode_ta/app/data/models/product_model.dart';
 import 'package:barcode_ta/app/routes/app_pages.dart';
 
-class StatusView extends GetView<StatusController> {
-  StatusView({Key? key}) : super(key: key);
+class PengembalianView extends GetView<PengembalianController> {
+  const PengembalianView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -46,7 +46,7 @@ class StatusView extends GetView<StatusController> {
                   height: 25,
                 ),
                 Text(
-                  "Status Barang",
+                  "Pengembalian Barang",
                   style: TextStyle(fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
@@ -65,7 +65,7 @@ class StatusView extends GetView<StatusController> {
             Padding(
               padding: const EdgeInsets.only(top: 185),
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: Get.put(StatusController()).streamStatusBarang(),
+                stream: Get.put(PengembalianController()).streamStatusBarang(),
                 builder: (context, snapProducts) {
                   if (snapProducts.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -102,7 +102,7 @@ class StatusView extends GetView<StatusController> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Get.toNamed(Routes.DETAIL_BARANG,
+                            Get.toNamed(Routes.DETAIL_HISTORY,
                                 arguments: product);
                           },
                           borderRadius: BorderRadius.circular(9),
